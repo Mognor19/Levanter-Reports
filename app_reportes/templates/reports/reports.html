@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Reportes/css/reports.css' %}">
+{% endblock css %}
+
+{% block title %}Reports{% endblock title %}
+
+{% block container %}
+
+    {% if data %}
+        <div class="container">
+            <table class="call_history">
+                <thead>
+                    <tr>
+                        <td>Date/Time</td>
+                        <td>CRID</td>
+                        <td>Date</td>
+                        <td>Call Start</td>
+                        <td>Call Length</td>
+                        <td>Duration</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in data %}
+                        <tr>
+                            <td>{{a.interaction_date}} {{a.interaction_start_time}}</td>
+                            <td>{{a.employee_id.employee_id}}</td>
+                            <td>{{a.interaction_date}}</td>
+                            <td>{{a.interaction_start_time}}</td>
+                            <td>{{a.interaction_length}}</td>
+                            <td>{{a.interaction_length_minutes}}.00</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+        </div>
+        <div class="container">
+            <table class="call_history">
+                <thead>
+                    <tr>
+                        <td>Start Date</td>
+                        <td>Start Time</td>
+                        <td>Dialed Number</td>
+                        <td>Fixed DID</td>
+                        <td>ISP Name</td>
+                        <td>ISP ID</td>
+                        <td>ISP Role</td>
+                        <td>ISP Site</td>
+                        <td>Minutes</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in data %}
+                        <tr>
+                            <td>{{a.interaction_date}}</td>
+                            <td>{{a.interaction_start_time}}</td>
+                            <td>{{a.employee_id.employee_id}}</td>
+                            <td>{{a.employee_id.employee_id}}</td>
+                            <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
+                            <td>{{a.employee_id.employee_id}}</td>
+                            <td>{{a.employee_id.skillset}}</td>
+                            <td>{{a.employee_id.city.city}}</td>
+                            <td>{{a.interaction_length_minutes}}.00</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="container">
+            <h1>There is nothing here...yet.</h1>
+        </div>
+    {% endif %}
+
+    {% block js %}
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <script>
+        var xValues = [{% for a in data %}"{{a.interaction_start_time}}",{% endfor %}]
+        var yValues = [{% for a in data %}{{a.interaction_length_minutes}},{% endfor %}]
+        var xyValues = [
+            {% for a in data %}{ x:{{a.interaction_length_minutes}},y:{{a.interaction_length_minutes}} },{% endfor %}
+        ];
+
+        new Chart("myChart", {
+        type: "line",
+        data: {
+            labels:xValues,
+            datasets: [{
+            pointRadius: 4,
+            pointBackgroundColor: "rgb(0,0,255)",
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            scales: {
+            xAxes: [{ticks: {min: 40, max:160}}],
+            yAxes: [{ticks: {min: 6, max:140}}],
+            }
+        }
+        });
+    </script>
+    {% endblock js %}
+
+{% endblock container %}

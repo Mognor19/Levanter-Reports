@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 88%;
+}
+.account{
+    display: flex;
+    margin: auto;
+    width: 15%;
+    height: 25%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 81, 0);
+    text-align: center;
+    border-radius: 20%;
+}
+

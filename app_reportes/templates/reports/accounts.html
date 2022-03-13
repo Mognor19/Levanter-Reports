@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Reportes/css/accounts.css' %}">
+{% endblock css %}
+
+{% block title %}Accounts{% endblock title %}
+
+{% block container %}
+
+    <div class="container">
+        <div class="account" for="propio" >
+            <a href="{% url 'Reportes:emp_propio' %}" id="propio" ><p>Propio</p></a>
+        </div>
+        <div class="account">
+            <a href="#" ><p>Transperfect</p></a>
+        </div>
+    </div>
+
+{% endblock container %}
