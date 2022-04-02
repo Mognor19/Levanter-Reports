@@ -8,66 +8,113 @@
 {% block title %}Reports{% endblock title %}
 
 {% block container %}
+    <div id="filter">
+        <form action="{% url 'Reportes:reports' %}" method="get">
+            <div class="uinput_container_select">
+                <label for="employee_id" >CRID</label>
+                <select name="employee_id" id="employee_id">
+                    <option disabled selected value> -- select an employee -- </option>
+                    {% for e in Employees %}
+                        <option value="{{e.employee_id}}">{{e.employee_id}} | {{e.first_name}} {{e.middle_name}} {{e.last_names}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="uinput_container_select">
+                <label for="date" >Date</label>
+                <select name="date" id="date">
+                    <option disabled selected value> -- select a city -- </option>
+                    {% for d in Dates %}
+                        <option value="{{d.interaction_date}}">{{d.interaction_date}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="uinput_container_button">
+                <input type="submit" value="Filter" id="button">
+            </div>
+        </form>
+    </div>
 
     {% if data %}
         <div class="container">
-            <table class="call_history">
-                <thead>
-                    <tr>
-                        <td>Date/Time</td>
-                        <td>CRID</td>
-                        <td>Date</td>
-                        <td>Call Start</td>
-                        <td>Call Length</td>
-                        <td>Duration</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for a in data %}
+            <div class="scroll_space">
+                <table class="call_history">
+                    <thead>
                         <tr>
-                            <td>{{a.interaction_date}} {{a.interaction_start_time}}</td>
-                            <td>{{a.employee_id.employee_id}}</td>
-                            <td>{{a.interaction_date}}</td>
-                            <td>{{a.interaction_start_time}}</td>
-                            <td>{{a.interaction_length}}</td>
-                            <td>{{a.interaction_length_minutes}}.00</td>
+                            <td style="width: 200px;">Date/Time</td>
+                            <td>CRID</td>
+                            <td>Date</td>
+                            <td>Call Start</td>
+                            <td>Call Length</td>
+                            <td>Duration (min.)</td>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+                    </thead>
+                    <tbody>
+                        {% for a in data %}
+                            <tr>
+                                <td>{{a.interaction_date}} {{a.interaction_start_time}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.interaction_date}}</td>
+                                <td>{{a.interaction_start_time}}</td>
+                                <td>{{a.interaction_length}}</td>
+                                <td>{{a.interaction_length_minutes}}.00</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="scroll_space" style="display: flex; justify-content: center; align-items: center;">
+                <table class="call_history">
+                    <thead>
+                        <tr>
+                            <td>Total Calls</td>
+                            <td>Total Minutes</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{total_calls}}</td>
+                            <td>{{total_minutes.interaction_length_minutes__sum}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="container">
-            <table class="call_history">
-                <thead>
-                    <tr>
-                        <td>Start Date</td>
-                        <td>Start Time</td>
-                        <td>Dialed Number</td>
-                        <td>Fixed DID</td>
-                        <td>ISP Name</td>
-                        <td>ISP ID</td>
-                        <td>ISP Role</td>
-                        <td>ISP Site</td>
-                        <td>Minutes</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for a in data %}
+            <div class="scroll_space">
+                <table class="call_history">
+                    <thead>
                         <tr>
-                            <td>{{a.interaction_date}}</td>
-                            <td>{{a.interaction_start_time}}</td>
-                            <td>{{a.employee_id.employee_id}}</td>
-                            <td>{{a.employee_id.employee_id}}</td>
-                            <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
-                            <td>{{a.employee_id.employee_id}}</td>
-                            <td>{{a.employee_id.skillset}}</td>
-                            <td>{{a.employee_id.city.city}}</td>
-                            <td>{{a.interaction_length_minutes}}.00</td>
+                            <td>Start Date</td>
+                            <td>Start Time</td>
+                            <td>Dialed Number</td>
+                            <td>Fixed DID</td>
+                            <td style="width: 200px !important;">ISP Name</td>
+                            <td>ISP ID</td>
+                            <td>ISP Role</td>
+                            <td>ISP Site</td>
+                            <td>Minutes</td>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for a in data %}
+                            <tr>
+                                <td>{{a.interaction_date}}</td>
+                                <td>{{a.interaction_start_time}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.skillset}}</td>
+                                <td>{{a.employee_id.city.city}}</td>
+                                <td>{{a.interaction_length_minutes}}.00</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="scroll_space">
+                <canvas id="myChart" style="width:700px"></canvas>
+            </div>
         </div>
     {% else %}
         <div class="container">
@@ -80,11 +127,31 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script>
-        var xValues = [{% for a in data %}"{{a.interaction_start_time}}",{% endfor %}]
+        var xValues = ["00:00 a.m.",
+                        "01:00 a.m",
+                        "02:00 a.m.",
+                        "03:00 a.m.",
+                        "04:00 a.m.",
+                        "05:00 a.m.",
+                        "06:00 a.m.",
+                        "07:00 a.m.",
+                        "08:00 a.m.",
+                        "09:00 a.m.",
+                        "10:00 a.m.",
+                        "11:00 a.m.",
+                        "12:00 a.m.",
+                        "13:00 a.m.",
+                        "14:00 a.m.",
+                        "15:00 a.m.",
+                        "16:00 a.m.",
+                        "17:00 a.m.",
+                        "18:00 a.m.",
+                        "19:00 a.m.",
+                        "20:00 a.m.",
+                        "21:00 a.m.",
+                        "22:00 a.m.",
+                        "23:00 a.m."]
         var yValues = [{% for a in data %}{{a.interaction_length_minutes}},{% endfor %}]
-        var xyValues = [
-            {% for a in data %}{ x:{{a.interaction_length_minutes}},y:{{a.interaction_length_minutes}} },{% endfor %}
-        ];
 
         new Chart("myChart", {
         type: "line",
@@ -105,6 +172,7 @@
         }
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     {% endblock js %}
 
 {% endblock container %}

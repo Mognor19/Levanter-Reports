@@ -6,6 +6,12 @@ class City(models.Model):
 
     def __str__(self):
         return f'City: {self.city}'
+
+class Skillset(models.Model):
+    skillset = models.CharField(max_length=6,null=True,unique=True, blank=True)
+
+    def __str__(self):
+        return f'City: {self.skillset}'
     
 
 # Create your models here.
@@ -14,9 +20,10 @@ class Propio(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_names  = models.CharField(max_length=50, null=True, blank=True)
-    interpreter_id = models.CharField(max_length=6, null=True, blank=True)
-    skillset = models.CharField(max_length=5, null=True, blank=True)
+    propio_id = models.CharField(max_length=50, null=True, blank=True)
+    skillset = models.ForeignKey(Skillset, on_delete=models.CASCADE, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
+    employee_active = models.CharField(max_length=1, default="1", null=True, blank=True)
     def __str__(self):
         return f'EID: {self.employee_id} | Employee: {self.first_name} {self.last_names}'
 

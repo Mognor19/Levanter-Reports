@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Employees/css/propio.css' %}">
+{% endblock css %}
+
+{% block title %}Propio{% endblock title %}
+
+{% block container %}
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="uinput-container">
+                <label for="employee_id">CRID</label>
+                <input type="text" id="employee_id" name="employee_id">
+            </div>
+            <div class="uinput-container">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name">
+            </div>
+            <div class="uinput-container">
+                <label for="middle_name">Middle Name</label>
+                <input type="text" id="middle_name" name="middle_name">
+            </div>
+            <div class="uinput-container">
+                <label for="last_names">Last Names</label>
+                <input type="text" id="last_names" name="last_names">
+            </div>
+            <div class="uinput-container">
+                <label for="propio_id">Propio ID</label>
+                <input type="text" id="propio_id" name="propio_id">
+            </div>
+            <div class="uinput-container-select">
+                <label for="city" >City</label>
+                <select name="city" id="city">
+                    <option disabled selected value> -- select a city -- </option>
+                    {% for c in Cities %}
+                        <option value="{{c.city}}">{{c.city}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="uinput-container-select">
+                <label for="">Skillset</label>
+                <label for="">{{Skillsets.skillset}}</label>
+            </div>
+            <div class="uinput-container-button">
+                <input type="submit" value="Add" id="button">
+            </div>
+        </form>
+        <table class="employees">
+            <thead>
+                <tr>
+                    <td>CRID</td>
+                    <td>Propio ID</td>
+                    <td style="width: 300px;">Name</td>
+                    <td>Skillset</td>
+                    <td>City</td>
+                    <td>Status</td>
+                    <td>Propio ID</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in Employees %}
+                <tr>
+                    <td>{{e.employee_id}}</td>
+                    <td>{{e.propio_id}}</td>
+                    <td>{{e.first_name}} {{e.middle_name}} {{e.last_names}}</td>
+                    <td>{{e.skillset.skillset}}</td>
+                    <td>{{e.city.city}}</td>
+                    <td style="display: flex; align-items: center; justify-content: center;" >
+                        {% if e.employee_active == "0" %}
+                        <label class="switch">
+                            <input type="checkbox" onclick="location.href='{% url 'Reportes:activate_employee' e.employee_id %}'" >
+                            <span class="slider round"></span>
+                        </label>
+                        {% else %}
+                        <label class="switch">
+                            <input type="checkbox" onclick="location.href='{% url 'Reportes:deactivate_employee' e.employee_id %}'" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        {% endif %}
+                    </td>
+                    <td>{{e.propio_id}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock container %}
+
+{% block js %}
+
+{% endblock js %}

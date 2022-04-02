@@ -1,5 +1,7 @@
 from django.http import JsonResponse
-from django.shortcuts import render
+from datetime import datetime
+from django.db.models import Sum
+from django.shortcuts import get_object_or_404, render
 from .models import *
 import pandas as pd
 import django_excel as excel
@@ -10,10 +12,64 @@ def accounts(request):
     return render (request, 'reports/accounts.html')
 
 def reports(request):
+    Employees = Propio.objects.all()
+    Dates = Propio_CallHistory.objects.order_by().values('interaction_date').distinct()
     Call_History = Propio_CallHistory.objects.all()
+    emp_id = request.GET.get('employee_id')
+    Date = request.GET.get('date')
+    total_minutes = Propio_CallHistory.objects.aggregate(Sum('interaction_length_minutes'))
+    total_calls = Propio_CallHistory.objects.all().count()
+    
+
+    if (emp_id != None):
+        Employee = Propio.objects.get(employee_id=emp_id)
+        Call_History = Propio_CallHistory.objects.filter(employee_id=Employee)
+        total_calls = Propio_CallHistory.objects.filter(employee_id=Employee).count()
+        total_minutes = Propio_CallHistory.objects.filter(employee_id=Employee).aggregate(Sum('interaction_length_minutes'))
+        if (Date != None and emp_id != None):
+            date_formated = datetime.strptime(Date, '%b. %d, %Y').date()
+            Call_History = Propio_CallHistory.objects.filter(interaction_date=date_formated, employee_id=Employee)
+            total_calls = Propio_CallHistory.objects.filter(interaction_date=date_formated, employee_id=Employee).count()
+            total_minutes = Propio_CallHistory.objects.filter(interaction_date=date_formated, employee_id=Employee).aggregate(Sum('interaction_length_minutes'))
+            ctx = {
+                "Employees":Employees,
+                "Dates":Dates,
+                "data":Call_History,
+                "total_calls":total_calls,
+                "total_minutes":total_minutes,
+            }
+            
+            return render(request, 'reports/reports.html', ctx)
+        ctx = {
+            "Employees":Employees,
+            "Dates":Dates,
+            "data":Call_History,
+            "total_calls":total_calls,
+            "total_minutes":total_minutes,
+        }
+        
+        return render(request, 'reports/reports.html', ctx)
+    elif (Date != None):
+        date_formated = datetime.strptime(Date, '%b. %d, %Y').date()
+        Call_History = Propio_CallHistory.objects.filter(interaction_date=date_formated)
+        total_calls = Propio_CallHistory.objects.filter(interaction_date=date_formated).count()
+        total_minutes = Propio_CallHistory.objects.filter(interaction_date=date_formated).aggregate(Sum('interaction_length_minutes'))
+        ctx = {
+            "Employees":Employees,
+            "Dates":Dates,
+            "data":Call_History,
+            "total_calls":total_calls,
+            "total_minutes":total_minutes,
+        }
+            
+        return render(request, 'reports/reports.html', ctx)
 
     ctx = {
+        "Employees":Employees,
+        "Dates":Dates,
         "data":Call_History,
+        "total_calls":total_calls,
+        "total_minutes":total_minutes,
     }
     return render(request, 'reports/reports.html', ctx)
 
@@ -49,14 +105,6 @@ def employees_propio(request):
                 interaction_length_minutes = ((df["LABEL-5"][x].hour * 60) + df["LABEL-5"][x].minute),
             )
             calls.save()
-        # request.FILES['call-history'].save_to_database(
-        #     model= Propio_CallHistory,
-        #     mapdict={
-        #         "interaction_date":"LABEL-3",
-        #         "interaction_start_time":"LABEL-4",
-        #         "interaction_length":"LABEL-5",
-        #     }
-        # )
         return render(request, 'reports/accounts.html')
 
 
@@ -67,13 +115,72 @@ def employees_propio(request):
 
 def get_employee_propio(request):
     Employees = Propio.objects.all()
-    Eid = request.GET.get('employee')
-    E = Propio.objects.filter(employee_id=Eid)
+    Cities = City.objects.all()
+    Skillsets = Skillset.objects.get(skillset='MSI PR')
+
+    if (request.method == "POST"):
+        employee_id = request.POST.get('employee_id')
+        propio_id = request.POST.get('propio_id')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name')
+        last_names = request.POST.get('last_names')
+        city = request.POST.get('city')
+        city_id = City.objects.get(city=city)
+        employee = Propio(
+            employee_id = employee_id,
+            first_name  = first_name, 
+            middle_name = middle_name,
+            last_names = last_names,
+            propio_id = propio_id,
+            skillset=Skillsets,
+            city=city_id,
+        )
+        employee.save()
+        ctx = {
+            "Employees":Employees,
+            "Cities":Cities,
+            "Skillsets":Skillsets,
+        }
+        return render(request, 'employees/propio.html', ctx)
 
     ctx = {
         "Employees":Employees,
-        "Employee":E,
-        "Test":Eid,
+        "Cities":Cities,
+        "Skillsets":Skillsets,
     }
-    return JsonResponse(ctx)
+    return render(request, 'employees/propio.html', ctx)
+
+
+def deactivate_employee(request, uid):
+    employee = get_object_or_404(Propio, employee_id=uid)
+    employee.employee_active = "0"
+    employee.save()
+
+    Employees = Propio.objects.all()
+    Cities = City.objects.all()
+    Skillsets = Skillset.objects.get(skillset='MSI PR')
+
+    ctx = {
+        "Employees":Employees,
+        "Cities":Cities,
+        "Skillsets":Skillsets,
+    }
+    return render(request, 'employees/propio.html', ctx)
+
+
+def activate_employee(request, uid):
+    employee = get_object_or_404(Propio, employee_id=uid)
+    employee.employee_active = "1"
+    employee.save()
+
+    Employees = Propio.objects.all()
+    Cities = City.objects.all()
+    Skillsets = Skillset.objects.get(skillset='MSI PR')
+
+    ctx = {
+        "Employees":Employees,
+        "Cities":Cities,
+        "Skillsets":Skillsets,
+    }
+    return render(request, 'employees/propio.html', ctx)
 

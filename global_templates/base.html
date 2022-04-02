@@ -12,12 +12,27 @@
 <body>
     <header id="navbar">
         <ul id="menu">
-            <li class="option"><a href="{% url 'Reportes:accounts' %}"><p>Accounts</p></a></li>
-            <li class="option"><a href="{% url 'Reportes:reports' %}"><p>Reports</p></a></li>
+            <div class="space-main">
+                <li class="option"><a href="{% url 'Reportes:accounts' %}"><p>Accounts</p></a></li>
+                <li class="option"><a href="{% url 'Reportes:reports' %}"><p>Reports</p></a></li>
+            </div>
+            <div class="space-secondary">
+                <li class="option"><p>Employees</p></li>
+                <ul id="dropdown">
+                    <div class="option-dropdown">
+                        <li class="option-dropdown"><a href="{% url 'Reportes:propio' %}"><p>Propio</p></a></li>
+                    </div>
+                    <div class="option-dropdown">
+                        <li class="option-dropdown"><a href="#"><p>Transperfect</p></a></li>
+                    </div>
+                </ul>
+            </div>
         </ul>
     </header>
     {% block container %}{% endblock container %}
-
+    <footer style="height: 50px;">
+        
+    </footer>
     {% block js %}{% endblock js %}
 </body>
 </html>

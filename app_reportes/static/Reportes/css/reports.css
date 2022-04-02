@@ -1,17 +1,68 @@
 .container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20PX;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+body{
+  background-color:whitesmoke;
+}
+canvas{
+  background-color:white;
 }
 
-tr:nth-child(even) {background-color: #f2f2f2;}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
 td{
-    width:100px;
+  width:100px;
 }
 thead tr td{
-  background-color: rgb(46, 46, 46);
-  color: rgb(255, 81, 0);
+background-color: rgb(46, 46, 46);
+color: rgb(255, 81, 0);
+}
+
+.scroll_space{
+overflow: auto;
+max-height: 400px;
+width:50%;
+padding: 0% 2% 2% 2%;
+}
+
+#filter{
+  padding:1%;
+  background-color:white;
+}
+
+#filter form{
+  display: flex;
+  flex-direction: row;
+}
+
+select {
+  width: 90%;
+  text-align-last: center;
+  box-shadow: none;
+  padding: 0 1em;
+  color: rgb(46, 46, 46);
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 0.55em;
+}
+
+.uinput_container_select{
+  display: flex;
+  align-items:center;
+  flex-direction: column;
+  min-width:200px;
+}
+
+#button{
+  border-radius:0.55em;
+  width:70px;
+  background-color:rgb(46,46,46);
+  color:rgb(255,81,0);
+  margin:15% 0% 0% 50%;
 }
