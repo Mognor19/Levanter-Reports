@@ -1,0 +1,71 @@
+/*Background*/
+body{
+    height: 100%;
+}
+
+/*login-page*/
+.login-page{
+    width: 360px;
+    padding: 10% 0 0;
+    margin: auto;
+}
+
+/*Formulario*/
+.form{
+    position: relative;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.315);
+    background-color: rgba(0, 0, 0, 0.288);
+    max-width: 360px;
+    margin: 5px auto 100px;
+    padding: 45px;
+    text-align: center;
+    border-radius: 6%;
+    color: #f2f2f2;
+}
+
+/*forma y posicion de texto y botones al formulario*/
+.form input{
+    font-family: 'Josefin Sans', sans-serif;
+    outline: 1;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/*boton de login*/
+.form button{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #ca3422;  
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #f2f2f2;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* .form button:hover, .form button:active{
+    background: #91C24A;
+} */
+
+.form .mensaje{
+    margin: 8px 0 0;
+    color: #f2f2f2;
+    font-size: 13px;
+    
+}
+
+.form .mensaje a{
+    color: #f2f2f2;
+    text-decoration: none;
+}
+
+.form .form-registrar{
+    display: none;
+}

@@ -6,33 +6,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'Base/css/base.css' %}">
-    <title>{% block title %}{% endblock title %}</title>
+    <title id="title">{% block title %}{% endblock title %}</title>
     {% block css %}{% endblock css %}
 </head>
 <body>
     <header id="navbar">
         <ul id="menu">
-            <div class="space-main">
-                <li class="option"><a href="{% url 'Reportes:accounts' %}"><p>Accounts</p></a></li>
+            <div class="space_main">
+                <li class="option"><a href="{% url 'Reportes:accounts_upload' %}"><p>Accounts</p></a></li>
                 <li class="option"><a href="{% url 'Reportes:reports' %}"><p>Reports</p></a></li>
             </div>
-            <div class="space-secondary">
-                <li class="option"><p>Employees</p></li>
-                <ul id="dropdown">
-                    <div class="option-dropdown">
-                        <li class="option-dropdown"><a href="{% url 'Reportes:propio' %}"><p>Propio</p></a></li>
-                    </div>
-                    <div class="option-dropdown">
-                        <li class="option-dropdown"><a href="#"><p>Transperfect</p></a></li>
-                    </div>
-                </ul>
+            <div class="space_secondary">
+                <div class="space_dropdown">
+                    <li class="option"><p>Employees</p></li>
+                    <ul id="dropdown">
+                        <div class="option_dropdown">
+                            <li class="option_dropdown"><a href="{% url 'Reportes:propio' %}"><p>Propio</p></a></li>
+                        </div>
+                        <div class="option_dropdown">
+                            <li class="option_dropdown"><a href="{% url 'Reportes:transperfect' %}"><p>Transperfect</p></a></li>
+                        </div>
+                    </ul>
+                </div>
+                <div class="space_logout">
+                    <li class="option">
+                        <a href="{% url 'log_out'%}">
+                            <p>Log out</p>
+                        </a>
+                    </li>
+                </div>
             </div>
         </ul>
     </header>
     {% block container %}{% endblock container %}
-    <footer style="height: 50px;">
-        
-    </footer>
-    {% block js %}{% endblock js %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            var title = $("#title").text()
+            $("a p").each(function(){
+                var parent = $(this).parent()
+                if($(this).text() == $(title)["selector"]) {
+                    $(parent).parent().addClass('active')
+                };
+            })
+        });
+    </script>
+    {% block js %}
+    {% endblock js %}
 </body>
 </html>

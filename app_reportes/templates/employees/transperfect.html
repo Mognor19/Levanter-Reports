@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block css %}
-    <link rel="stylesheet" href="{% static 'Employees/css/propio.css' %}">
+    <link rel="stylesheet" href="{% static 'Employees/css/transperfect.css' %}">
 {% endblock css %}
 
-{% block title %}Propio{% endblock title %}
+{% block title %}Transperfect{% endblock title %}
 
 {% block container %}
     <div class="container">
@@ -28,8 +27,8 @@
                 <input type="text" id="last_names" name="last_names">
             </div>
             <div class="uinput-container">
-                <label for="propio_id">Propio ID</label>
-                <input type="text" id="propio_id" name="propio_id">
+                <label for="transperfect_id">Transperfect ID</label>
+                <input type="text" id="transperfect_id" name="transperfect_id">
             </div>
             <div class="uinput-container-select">
                 <label for="city" >City</label>
@@ -56,7 +55,7 @@
                     <td>Skillset</td>
                     <td>City</td>
                     <td>Status</td>
-                    <td>Propio ID</td>
+                    <td style="width: 150px;">Transperfect ID</td>
                 </tr>
             </thead>
             <tbody>
@@ -69,23 +68,22 @@
                     <td style="display: flex; align-items: center; justify-content: center;" >
                         {% if e.employee_active == "0" %}
                         <label class="switch">
-                            <input type="checkbox" onclick="location.href='{% url 'Reportes:activate_employee_propio' e.employee_id %}'" >
+                            <input type="checkbox" onclick="location.href='{% url 'Reportes:activate_employee_transperfect' e.employee_id %}'" >
                             <span class="slider round"></span>
                         </label>
                         {% else %}
                         <label class="switch">
-                            <input type="checkbox" onclick="location.href='{% url 'Reportes:deactivate_employee_propio' e.employee_id %}'" checked>
+                            <input type="checkbox" onclick="location.href='{% url 'Reportes:deactivate_employee_transperfect' e.employee_id %}'" checked>
                             <span class="slider round"></span>
                         </label>
                         {% endif %}
                     </td>
-                    <td>{{e.propio_id}}</td>
+                    <td>{{e.transperfect_id}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
 {% endblock container %}
 
 {% block js %}

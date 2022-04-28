@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'Login/css/login.css' %}">
+    <title>Login</title>
+</head>
+<body>
+    
+    <div class="login-page">
+        <div class="form">
+            <form class="form-login" action="{% url 'log_in' %}" method="post" >
+                {% csrf_token %}
+                <h1>Login</h1>
+                {% if mensaje %}
+                <p style="background-color: rgba(202, 52, 34, 0.5);"    class="errorLogin"> {{ mensaje }}</p>
+                {% endif %}
+                <input type="text" class="form-control" id="username" name="username" placeholder="Usuario" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+                <button type="submit" class="button-login">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

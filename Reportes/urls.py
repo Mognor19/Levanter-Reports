@@ -24,8 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     #Urls para el inicio de sesion
-    
+    path('', views.page_login, name='page_login'),
+    path('login/', views.log_in, name='log_in'),
+    path('logout/', views.log_out, name='log_out'),
 
     # Urls para la app de reportes de levanter
-    path('', include('app_reportes.urls')),
+    path('Reportes/', include('app_reportes.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Reportes/css/transperfect.css' %}">
+{% endblock css %}
+
+{% block title %}Transperfect{% endblock title %}
+
+{% block container %}
+<div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="">Call History Upload</label>
+        <div class="uinput-container" id="date">
+            <label for="employee_id" >Date</label>
+            <input type="date" id="date" name="date" value="{{today}}" min="{{week}}" max="{{today}}">
+        </div>
+        <div class="uinput-container">
+            <input type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
+        <input id="button" type="submit" value="Upload">
+    </form>
+</div>
+{% endblock container %}
+
+{% block js %}
+{% endblock js %}
