@@ -7,34 +7,48 @@
     <link href="{% static 'Reportes/css/jquery.multiselect.css' %}" rel="stylesheet" type="text/css">
 {% endblock css %}
 
-{% block title %}Propio{% endblock title %}
+{% block title %}Reports{% endblock title %}
 
 {% block container %}
-    {% if data %}
-        <div id="filter">
-            <form action="{% url 'Reportes:reports_propio' %}" method="get">
-                <div class="uinput_container_select">
-                    <label for="employee_id" >CRID</label>
-                    <select name="employee_id" id="employee_id" multiple>
-                        {% for e in Employees %}
-                            <option value="{{e.employee_id}}">{{e.employee_id}} | {{e.first_name}} {{e.middle_name}} {{e.last_names}}</option>
-                        {% endfor %}
-                    </select>
+        <div id="options">
+            <div id="filter">
+                <form action="{% url 'Reportes:reports_propio' %}" method="get">
+                    <div class="uinput_container_select">
+                        <label for="employee_id" >CRID</label>
+                        <select name="employee_id" id="employee_id" multiple>
+                            {% for e in Employees %}
+                                <option value="{{e.employee_id}}">{{e.employee_id}} | {{e.first_name}} {{e.middle_name}} {{e.last_names}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="uinput_container_select">
+                        <label for="date" >Date</label>
+                        <select name="date" id="date" multiple>
+                            {% for d in Dates %}
+                                <option value="{{d.interaction_date}}">{{d.interaction_date}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="uinput_container_select">
+                        <label for="city" >City</label>
+                        <select name="city" id="city" multiple>
+                            {% for c in Cities %}
+                                <option value="{{c.city}}">{{c.city}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="uinput_container_button">
+                        <input type="submit" value="Filter" id="button">
+                    </div>
+                </form>
+            </div>
+            {% if data %}
+                <div class="download">
+                    <input type="button" id="btnDownload" value="Download" onclick="Export()" />
                 </div>
-                <div class="uinput_container_select">
-                    <label for="date" >Date</label>
-                    <select name="date" id="date">
-                        <option disabled selected value> -- select a date -- </option>
-                        {% for d in Dates %}
-                            <option value="{{d.interaction_date}}">{{d.interaction_date}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="uinput_container_button">
-                    <input type="submit" value="Filter" id="button">
-                </div>
-            </form>
+            {% endif %}
         </div>
+    {% if data %}
         <div class="container">
             <div class="scroll_space">
                 <table class="call_history">
@@ -51,10 +65,10 @@
                     <tbody>
                         {% for a in data %}
                             <tr>
-                                <td>{{a.interaction_date}} {{a.interaction_start_time}}</td>
+                                <td>{{a.interaction_date}} {{a.interaction_start_time|time}}</td>
                                 <td>{{a.employee_id.employee_id}}</td>
                                 <td>{{a.interaction_date}}</td>
-                                <td>{{a.interaction_start_time}}</td>
+                                <td>{{a.interaction_start_time|time}}</td>
                                 <td>{{a.interaction_length}}</td>
                                 <td>{{a.interaction_length_minutes}}.00</td>
                             </tr>
@@ -103,11 +117,11 @@
                         {% for a in data %}
                             <tr>
                                 <td>{{a.interaction_date}}</td>
-                                <td>{{a.interaction_start_time}}</td>
+                                <td>{{a.interaction_start_time|time}}</td>
                                 <td>{{a.employee_id.employee_id}}</td>
                                 <td>{{a.employee_id.employee_id}}</td>
                                 <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
-                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.propio_id}}</td>
                                 <td>{{a.employee_id.skillset}}</td>
                                 <td>{{a.employee_id.city.city}}</td>
                                 <td>{{a.interaction_length_minutes}}.00</td>
@@ -121,7 +135,38 @@
             </div>
         </div>
         <footer style="height: 50px;">
-        
+            <div style="position: fixed; bottom: 100%;">
+                <table id="call_summary" class="call_history">
+                    <thead>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>Start Time</td>
+                            <td>Fixed DID</td>
+                            <td style="width: 200px !important;">ISP Name</td>
+                            <td>ISP ID</td>
+                            <td>ISP Role</td>
+                            <td>ISP Site</td>
+                            <td>Interaction Length</td>
+                            <td>Minutes</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in data %}
+                            <tr>
+                                <td>{{a.interaction_date}}</td>
+                                <td>{{a.interaction_start_time|time}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
+                                <td>{{a.employee_id.propio_id}}</td>
+                                <td>{{a.employee_id.skillset}}</td>
+                                <td>{{a.employee_id.city.city}}</td>
+                                <td>{{a.interaction_length}}</td>
+                                <td>{{a.interaction_length_minutes}}.00</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </footer>
     {% else %}
         <div class="container">
@@ -132,17 +177,49 @@
 {% endblock container %}
 
 {% block js %}
+    <script src="{% static 'Reportes/js/xlsx.core.min.js' %}"></script>
+    <script src="{% static 'Reportes/js/FileSaver.min.js' %}"></script>
+    <script src="{% static 'Reportes/js/tableExport.min.js' %}"></script>
+    <script>
+        function Export() {
+            $('#call_summary').tableExport({type:'xlsx'});
+        }
+    </script>
     <script src="{% static 'Reportes/js/jquery.multiselect.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>
-        $('select[multiple]').multiselect({
+        $('#employee_id').multiselect({
             columns  : 1,
             search   : true,
             selectAll: true,
             texts    : {
                 placeholder: '-- select an employee --',
                 search     : 'Search Employee'
-            }
+            },
+            maxHeight: 150,
+            maxPlaceholderOpts: 1,
+        });
+        $('#date').multiselect({
+            columns  : 1,
+            search   : true,
+            selectAll: true,
+            texts    : {
+                placeholder: '-- select a date --',
+                search     : 'Search Date'
+            },
+            maxHeight: 150,
+            maxPlaceholderOpts: 1,
+        });
+        $('#city').multiselect({
+            columns  : 1,
+            search   : true,
+            selectAll: true,
+            texts    : {
+                placeholder: '-- select a city --',
+                search     : 'Search City'
+            },
+            maxHeight: 150,
+            maxPlaceholderOpts: 1,
         });
     </script>
     <script>
@@ -158,19 +235,19 @@
                         "09:00 a.m.",
                         "10:00 a.m.",
                         "11:00 a.m.",
-                        "12:00 a.m.",
-                        "13:00 a.m.",
-                        "14:00 a.m.",
-                        "15:00 a.m.",
-                        "16:00 a.m.",
-                        "17:00 a.m.",
-                        "18:00 a.m.",
-                        "19:00 a.m.",
-                        "20:00 a.m.",
-                        "21:00 a.m.",
-                        "22:00 a.m.",
-                        "23:00 a.m."]
-        var yValues = [{% for a in data %}{{a.interaction_length_minutes}},{% endfor %}]
+                        "12:00 p.m.",
+                        "13:00 p.m.",
+                        "14:00 p.m.",
+                        "15:00 p.m.",
+                        "16:00 p.m.",
+                        "17:00 p.m.",
+                        "18:00 p.m.",
+                        "19:00 p.m.",
+                        "20:00 p.m.",
+                        "21:00 p.m.",
+                        "22:00 p.m.",
+                        "23:00 p.m."]
+        var yValues = [{% for t in times %}{{t}},{% endfor %}]
 
         new Chart("myChart", {
         type: "line",
@@ -186,7 +263,7 @@
             legend: {display: false},
             scales: {
             xAxes: [{ticks: {min: 40, max:160}}],
-            yAxes: [{ticks: {min: 6, max:140}}],
+            yAxes: [{ticks: {min: 0, max:100}}],
             }
         }
         });

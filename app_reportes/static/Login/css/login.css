@@ -1,27 +1,56 @@
-/*Background*/
-body{
-    height: 100%;
-}
-
 /*login-page*/
-.login-page{
-    width: 360px;
+.login_page{
     padding: 10% 0 0;
+    display: flex;
+    max-width: 80%;
+    justify-content: space-between;
+    align-items: center;
     margin: auto;
 }
 
+.logo{
+    display:flex;
+    height:20%;
+    padding-left:10%;
+    align-items: center;
+}
+
+.logo img{
+    position:absolute;
+    padding-left:11%;
+}
+
+/*titulo*/
+.title_space{
+    font-size: 24px;
+}
+
+.title_space h1{
+    margin: 0px;
+}
+
+.title_space h3{
+    margin: 0px;
+    color: #ca3422;
+}
+
+.vl{
+    border-left: 2px solid rgba(111, 111, 111, 0.3);
+    border-radius: 70%;
+    position: absolute;
+    right: 600px;
+    height: 80%;
+    top: 100px;
+}
+
+
 /*Formulario*/
 .form{
-    position: relative;
     z-index: 1;
-    background-color: rgba(0, 0, 0, 0.315);
-    background-color: rgba(0, 0, 0, 0.288);
-    max-width: 360px;
-    margin: 5px auto 100px;
+    max-width: 300px;
     padding: 45px;
     text-align: center;
-    border-radius: 6%;
-    color: #f2f2f2;
+    color: #000000;
 }
 
 /*forma y posicion de texto y botones al formulario*/
@@ -34,25 +63,8 @@ body{
     margin: 0 0 15px;
     padding: 15px;
     box-sizing: border-box;
+    border-radius: 15px;
 }
-
-/*boton de login*/
-.form button{
-    font-family: 'Josefin Sans', sans-serif;
-    text-transform: uppercase;
-    outline: 0;
-    background: #ca3422;  
-    width: 100%;
-    border: 0;
-    padding: 15px;
-    color: #f2f2f2;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-/* .form button:hover, .form button:active{
-    background: #91C24A;
-} */
 
 .form .mensaje{
     margin: 8px 0 0;
@@ -68,4 +80,28 @@ body{
 
 .form .form-registrar{
     display: none;
+}
+
+/*boton de login*/
+.form button{
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #ca3422;  
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #f2f2f2;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.errorLogin{
+    font-size: 15px;
+    border: 1px;
+    padding:3px;
+    border-radius: 10px;
+    color:#f2f2f2;
+    background-color: rgb(208, 52, 44, 0.9);
 }

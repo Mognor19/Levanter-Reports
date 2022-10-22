@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'Reportes/css/propio.css' %}">
 {% endblock css %}
 
-{% block title %}Propio{% endblock title %}
+{% block title %}Upload{% endblock title %}
 
 {% block container %}
     <div class="container">
@@ -14,7 +14,7 @@
             <label for="">Call History Upload</label>
             <div class="uinput-container">
                 <label for="employee_id" >Employee ID</label>
-                <select name="employee" id="employee_id">
+                <select required name="employee" id="employee_id">
                     <option disabled selected value> -- select an employee -- </option>
                     {% for e in Employees %}
                         {% if e.employee_active == "1" %}
@@ -23,28 +23,26 @@
                     {% endfor %}
                 </select>
             </div>
-            {% comment %} <div class="uinput-container">
-                <div id="full_name">
-                    
-                </div>
-                <label for="full_name">Name</label>
-                <input type="text" name="full_name" id="full_name" value="{{}}" readonly>
-            </div> {% endcomment %}
-            {% comment %} <div class="uinput-container">
-                {% if Eid %}
-                    <h1>{{Eid.employee_id}}</h1>
-                {% endif %}
-                <label for="agent_id">Agent ID</label>
-    
-            </div>
-            <div class="uinput-container">
-                <label for="date">Date</label>
-    
-            </div> {% endcomment %}
     
             <div class="uinput-container">
                 <input type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
             </div>
+
+            {% if messages %}
+                {% for m in messages %}
+                    {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <div class="error">
+                            <img src="{% static 'Reportes/img/warning.png' %}" alt="">
+                            <p>{{m}}</p>
+                        </div>
+                    {% else %}
+                        <div class="success">
+                            <img src="{% static 'Reportes/img/success.png' %}" alt="">
+                            <p>{{m}}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
     
             <input id="button" type="submit" value="Upload">
         </form>
@@ -53,25 +51,10 @@
 {% endblock container %}
 
 {% block js %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    {% comment %} <script>
-        document.getElementById("employee_id").addEventListener("change", function(){
-            document.getElementById("full_name").innerHTML = "";
-            $.ajax({
-                type: 'GET',
-                url:'employees-propio/get-employee/',
-                data:{
-                    employee: $('#employee_id').val(),
-                },
-                dataType:'json',
-                success:function(response){
-                    var select = document.getElementById("full_name");
-                    var input = document.createElement("input");
-                    input.value = response.Employee.first_name + " " + response.Employee.middle_name + " " + response.Employee.last_names
-                    input.innerHTML = response.Employee.first_name + " " + response.Employee.middle_name + " " + response.Employee.last_names
-                    select.appendChild(input)
-                }
-            })
-        })
-    </script> {% endcomment %}
+    <script>
+        setTimeout(fade_out, 4000);
+        function fade_out() {
+            $(".success").fadeOut();
+        }
+    </script>
 {% endblock js %}

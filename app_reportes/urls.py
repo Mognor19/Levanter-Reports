@@ -1,4 +1,3 @@
-from unicodedata import name
 from django.urls import path
 from . import views
 
@@ -6,12 +5,19 @@ app_name = 'Reportes'
 
 urlpatterns = [
     
+    #URLs para Subir datos
     path('', views.accounts, name='accounts_upload'),
+    path('upload_transperfect', views.transperfect, name='transperfect_upload'),
+    path('employees-propio/', views.employees_propio, name='emp_propio'),
+    path('employees-transperfect/performance', views.employees_transperfect_performance, name='emp_transp_perf'),
+    path('employees-transperfect/production', views.employees_transperfect_production, name='emp_transp_prod'),
+
+    #URLs para los Reportes
     path('reports/', views.reports, name='reports'),
     path('reports_propio/', views.reports_propio, name='reports_propio'),
     path('reports_transperfect/', views.reports_transperfect, name='reports_transperfect'),
-    path('employees-propio/', views.employees_propio, name='emp_propio'),
-    path('employees-transperfect/', views.employees_transperfect, name='emp_transp'),
+    path('reports_transperfect_performance/', views.reports_transperfect_performance, name='reports_transperfect_perf'),
+    path('reports_transperfect_production/', views.reports_transperfect_production, name='reports_transperfect_prod'),
     
     #URLs para Empleados de Propio
     path('propio/', views.get_employee_propio ,name='propio'),

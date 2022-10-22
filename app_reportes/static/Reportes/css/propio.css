@@ -18,12 +18,45 @@
     height: 88%;
 }
 
+.error{
+    display:flex;
+    font-size: 15px;
+    border: 1px;
+    color:white;
+    border-radius: 15px;
+    background-image: linear-gradient(to right, transparent, rgb(208, 52, 44));
+    margin-bottom:20px;
+}
+
+.error img{
+    padding:0px 10px 0px 10px;
+    margin: auto;
+    height:30px;
+}
+
+.success{
+    display:flex;
+    font-size: 15px;
+    border: 1px;
+    color:white;
+    border-radius: 15px;
+    background-image: linear-gradient(to right, transparent, rgb(75, 181, 67));
+    margin-bottom:20px;
+    padding-right: 10px;
+}
+
+.success img{
+    padding:0px 10px 0px 10px;
+    margin: auto;
+    height:30px;
+}
+
 form{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 275px;
+    width: 310px;
     height: 88%;
     padding: 2% 1% 0% 1%;
     border: none;
@@ -54,5 +87,10 @@ select {
     border: none;
     border-radius: 20px;
     margin-bottom: 20px;
+}
+
+body{
+    font-family: Helvetica;
+    font-size: 14px;
 }
 

@@ -12,7 +12,6 @@ class Skillset(models.Model):
 
     def __str__(self):
         return f'{self.skillset}'
-    
 
 # Create your models here.
 class Propio(models.Model):
@@ -20,7 +19,7 @@ class Propio(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_names  = models.CharField(max_length=50, null=True, blank=True)
-    propio_id = models.CharField(max_length=50, null=True, blank=True)
+    propio_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
     skillset = models.ForeignKey(Skillset, on_delete=models.CASCADE, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     employee_active = models.CharField(max_length=1, default="1", null=True, blank=True)
@@ -32,7 +31,7 @@ class Transperfect(models.Model):
     first_name = models.CharField(max_length=50, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_names  = models.CharField(max_length=50, null=True, blank=True)
-    transperfect_id = models.CharField(max_length=50, null=True, blank=True)
+    transperfect_id = models.CharField(max_length=50, unique=True, null=True, blank=True)
     skillset = models.ForeignKey(Skillset, on_delete=models.CASCADE, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     employee_active = models.CharField(max_length=1, default="1", null=True, blank=True)
@@ -42,9 +41,10 @@ class Transperfect(models.Model):
 class Propio_CallHistory(models.Model):
     employee_id = models.ForeignKey(Propio, on_delete=models.CASCADE, null=True, blank=True)
     interaction_date = models.DateField(null=True, blank=True)
-    interaction_start_time = models.TimeField(null=True, blank=True)
+    interaction_start_time = models.DateTimeField(null=True, blank=True)
     interaction_length = models.CharField(max_length=9,null=True, blank=True)
     interaction_length_minutes = models.IntegerField(null=True,blank=True)
+    created = models.DateTimeField(null=True, blank=True)
     def __str__(self):
         return f'{self.interaction_date} '
 
@@ -69,6 +69,22 @@ class Transperfect_CallHistory(models.Model):
     meeting_minutes = models.FloatField(null=True, blank=True)
     shift_lunch = models.CharField(max_length=9,null=True, blank=True)
     lunch_minutes = models.FloatField(null=True, blank=True)
+    created = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        return f'Date:{self.date} | EID:{self.employee_id}'
+
+class Production_Transperfect_CallHistory(models.Model):
+    employee_id = models.ForeignKey(Transperfect, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    interaction_start_time = models.DateTimeField(null=True, blank=True)
+    interaction_end_time = models.DateTimeField(null=True, blank=True)
+    language = models.CharField(max_length=20, null=True, blank=True)
+    minutes = models.FloatField(null=True, blank=True)
+    speed_answer = models.IntegerField(null=True, blank=True)
+    adjusted_minutes = models.FloatField(null=True, blank=True)
+    created = models.DateTimeField(null=True, blank=True)
+    
     def __str__(self):
         return f'Date:{self.date} | EID:{self.employee_id}'
 

@@ -13,8 +13,9 @@
     <header id="navbar">
         <ul id="menu">
             <div class="space_main">
-                <li class="option"><a href="{% url 'Reportes:accounts_upload' %}"><p>Accounts</p></a></li>
+                <li class="option"><a href="{% url 'Reportes:accounts_upload' %}"><p>Upload</p></a></li>
                 <li class="option"><a href="{% url 'Reportes:reports' %}"><p>Reports</p></a></li>
+                <li class="option"><a href="{% url 'Registro:record' %}"><p>Log</p></a></li>
             </div>
             <div class="space_secondary">
                 <div class="space_dropdown">
@@ -43,7 +44,7 @@
     <script>
         $(document).ready(function(){
             var title = $("#title").text()
-            $("a p").each(function(){
+            $("li p").each(function(){
                 var parent = $(this).parent()
                 if($(this).text() == $(title)["selector"]) {
                     $(parent).parent().addClass('active')

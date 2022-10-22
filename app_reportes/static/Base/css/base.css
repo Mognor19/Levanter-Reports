@@ -41,7 +41,7 @@ ul{
 }
 
 a{
-    color: black;
+    color: black !important;
     text-decoration: none !important;
     width: 100%;
     height: 100%;

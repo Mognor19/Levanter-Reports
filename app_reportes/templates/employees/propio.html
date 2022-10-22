@@ -3,37 +3,53 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'Employees/css/propio.css' %}">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 {% endblock css %}
 
-{% block title %}Propio{% endblock title %}
+{% block title %}Employees{% endblock title %}
 
 {% block container %}
+    {% if messages %}
+        {% for m in messages %}
+            {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="error">
+                    <img src="{% static 'Reportes/img/warning.png' %}" alt="">
+                    <p>{{m}}</p>
+                </div>
+            {% else %}
+                <div class="success">
+                    <img src="{% static 'Reportes/img/success.png' %}" alt="">
+                    <p>{{m}}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <div class="container">
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="uinput-container">
                 <label for="employee_id">CRID</label>
-                <input type="text" id="employee_id" name="employee_id">
+                <input required type="number" placeholder="000111" min="100000" pattern="\d{6}" title="Must be a 6 digit number" id="employee_id" name="employee_id">
             </div>
             <div class="uinput-container">
                 <label for="first_name">First Name</label>
-                <input type="text" id="first_name" name="first_name">
+                <input required type="text" id="first_name" name="first_name">
             </div>
             <div class="uinput-container">
                 <label for="middle_name">Middle Name</label>
-                <input type="text" id="middle_name" name="middle_name">
+                <input required type="text" id="middle_name" name="middle_name">
             </div>
             <div class="uinput-container">
                 <label for="last_names">Last Names</label>
-                <input type="text" id="last_names" name="last_names">
+                <input required type="text" id="last_names" name="last_names">
             </div>
             <div class="uinput-container">
                 <label for="propio_id">Propio ID</label>
-                <input type="text" id="propio_id" name="propio_id">
+                <input required type="text" id="propio_id" name="propio_id">
             </div>
             <div class="uinput-container-select">
                 <label for="city" >City</label>
-                <select name="city" id="city">
+                <select required name="city" id="city">
                     <option disabled selected value> -- select a city -- </option>
                     {% for c in Cities %}
                         <option value="{{c.city}}">{{c.city}}</option>
@@ -48,46 +64,176 @@
                 <input type="submit" value="Add" id="button">
             </div>
         </form>
-        <table class="employees">
-            <thead>
-                <tr>
-                    <td>CRID</td>
-                    <td style="width: 300px;">Name</td>
-                    <td>Skillset</td>
-                    <td>City</td>
-                    <td>Status</td>
-                    <td>Propio ID</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for e in Employees %}
-                <tr>
-                    <td>{{e.employee_id}}</td>
-                    <td>{{e.first_name}} {{e.middle_name}} {{e.last_names}}</td>
-                    <td>{{e.skillset.skillset}}</td>
-                    <td>{{e.city.city}}</td>
-                    <td style="display: flex; align-items: center; justify-content: center;" >
-                        {% if e.employee_active == "0" %}
-                        <label class="switch">
-                            <input type="checkbox" onclick="location.href='{% url 'Reportes:activate_employee_propio' e.employee_id %}'" >
-                            <span class="slider round"></span>
-                        </label>
-                        {% else %}
-                        <label class="switch">
-                            <input type="checkbox" onclick="location.href='{% url 'Reportes:deactivate_employee_propio' e.employee_id %}'" checked>
-                            <span class="slider round"></span>
-                        </label>
-                        {% endif %}
-                    </td>
-                    <td>{{e.propio_id}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div id="pagination">
+            <table class="employees" id="data">
+                <thead>
+                    <tr>
+                        <td>CRID</td>
+                        <td style="width: 300px;">Name</td>
+                        <td>Skillset</td>
+                        <td>City</td>
+                        <td>Status</td>
+                        <td>Propio ID</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in Employees %}
+                    <tr>
+                        <td>{{e.employee_id}}</td>
+                        <td>{{e.first_name}} {{e.middle_name}} {{e.last_names}}</td>
+                        <td>{{e.skillset.skillset}}</td>
+                        <td>{{e.city.city}}</td>
+                        <td style="display: flex; align-items: center; justify-content: center;" >
+                            {% if e.employee_active == "0" %}
+                            <label class="switch">
+                                <input type="checkbox" onclick="location.href='{% url 'Reportes:activate_employee_propio' e.employee_id %}'" >
+                                <span class="slider round"></span>
+                            </label>
+                            {% else %}
+                            <label class="switch">
+                                <input type="checkbox" onclick="location.href='{% url 'Reportes:deactivate_employee_propio' e.employee_id %}'" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            {% endif %}
+                        </td>
+                        <td>{{e.propio_id}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav class="pagination-container">
+                <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
+                  &lt;
+                </button>
+                 
+                <div id="pagination-numbers">
+               
+                </div>
+                 
+                <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
+                  &gt;
+                </button>
+              </nav>
+        </div>
     </div>
 
 {% endblock container %}
 
 {% block js %}
+    <script>
+        setTimeout(fade_out, 4000);
+        var max_chars = 5;
+        $('#employee_id').keydown( function(e){
+            if (e.keyCode == 8){
+                // Desvio del "backspace", sin esta condicion el programa elimina los ultimos 2 numeros en lugar de 1.
+            }else if ($(this).val().length > max_chars) {
+                $(this).val($(this).val().substr(0, max_chars));
+            }
+        });
+        function fade_out() {
+            $(".success").fadeOut();
+        }
+    </script>
+    <script>
+        const paginationNumbers = document.getElementById("pagination-numbers");
+        var tableId = document.getElementById('data');
+        var tBody = tableId.getElementsByTagName('tbody')[0];
+        var listItems = tBody.getElementsByTagName('tr');
+        const nextButton = document.getElementById("next-button");
+        const prevButton = document.getElementById("prev-button");
 
+        const paginationLimit = 18;
+        const pageCount = Math.ceil(listItems.length / paginationLimit);
+        let currentPage;
+
+        const appendPageNumber = (index) => {
+            const pageNumber = document.createElement("button");
+            pageNumber.className = "pagination-number";
+            pageNumber.innerHTML = index;
+            pageNumber.setAttribute("page-index", index);
+            pageNumber.setAttribute("aria-label", "Page " + index);
+            paginationNumbers.appendChild(pageNumber);
+
+        };
+           
+        const getPaginationNumbers = () => {
+            for (let i = 1; i <= pageCount; i++) {
+              appendPageNumber(i);
+            }
+        };
+
+        const setCurrentPage = (pageNum) => {
+            currentPage = pageNum;
+             
+            handleActivePageNumber();
+            handlePageButtonsStatus();
+           
+            const prevRange = (pageNum - 1) * paginationLimit;
+            const currRange = pageNum * paginationLimit;
+            for (var i = 0; i < listItems.length; i++){
+              listItems[i].classList.add("hidden");
+              if (i >= prevRange && i < currRange) {
+                listItems[i].classList.remove("hidden");
+              }
+            };
+        };
+
+        window.addEventListener("load", () => {
+            getPaginationNumbers();
+            setCurrentPage(1);
+
+            prevButton.addEventListener("click", () => {
+                setCurrentPage(currentPage - 1);
+            });
+             
+            nextButton.addEventListener("click", () => {
+                setCurrentPage(currentPage + 1);
+            });
+
+            document.querySelectorAll(".pagination-number").forEach((button) => {
+                const pageIndex = Number(button.getAttribute("page-index"));
+                if (pageIndex) {
+                  button.addEventListener("click", () => {
+                    setCurrentPage(pageIndex);
+                  });
+                }
+            });
+        });
+
+        const handleActivePageNumber = () => {
+            document.querySelectorAll(".pagination-number").forEach((button) => {
+              button.classList.remove("active");
+               
+              const pageIndex = Number(button.getAttribute("page-index"));
+              if (pageIndex == currentPage) {
+                button.classList.add("active");
+              }
+            });
+        };
+
+        const disableButton = (button) => {
+            button.classList.add("disabled");
+            button.setAttribute("disabled", true);
+        };
+           
+        const enableButton = (button) => {
+            button.classList.remove("disabled");
+            button.removeAttribute("disabled");
+        };
+           
+        const handlePageButtonsStatus = () => {
+            if (currentPage === 1) {
+              disableButton(prevButton);
+            } else {
+              enableButton(prevButton);
+            }
+           
+            if (pageCount === currentPage) {
+              disableButton(nextButton);
+            } else {
+              enableButton(nextButton);
+            }
+        };
+
+    </script>
 {% endblock js %}

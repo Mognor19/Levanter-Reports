@@ -15,22 +15,22 @@ canvas{
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #d1d1d1;
 }
 
 td{
   width:100px;
 }
 thead tr td{
-background-color: rgb(46, 46, 46);
-color: rgb(255, 81, 0);
+  background-color: rgb(46, 46, 46);
+  color: rgb(255, 81, 0);
 }
 
 .scroll_space{
-overflow: auto;
-max-height: 400px;
-width:50%;
-padding: 0% 2% 2% 2%;
+  overflow: auto;
+  max-height: 400px;
+  width:50%;
+  padding: 0% 2% 2% 2%;
 }
 
 #filter{
@@ -111,11 +111,31 @@ button {
 #button{
   border-radius:0.55em;
   width:70px;
+  height: 35px;
   background-color:rgb(46,46,46);
   color:rgb(255,81,0);
   margin:15% 0% 0% 50%;
 }
 
+#btnDownload{
+  border-radius:0.55em;
+  background-color:rgb(46,46,46);
+  color:rgb(255,81,0);
+  height:35px;
+  width:90px;
+}
+
+.download{
+  padding:1%;
+}
+
 ul{
   padding: 0%!important;
+}
+
+#options{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }

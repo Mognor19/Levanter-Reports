@@ -14,7 +14,6 @@ def page_login(request):
         
     return render(request, 'security/login.html')
 
-
 # Iniciar sesion 
 def log_in(request):
     if (request.method == "POST"):
@@ -35,6 +34,7 @@ def log_in(request):
 
     else:
         return redirect('/')
+
 
 def log_out(request):
     logout(request)

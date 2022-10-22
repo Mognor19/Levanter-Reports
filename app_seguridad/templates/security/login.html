@@ -10,18 +10,25 @@
     <title>Login</title>
 </head>
 <body>
-    
-    <div class="login-page">
+    <div class="login_page">
+        <div class="logo">
+            <div class="title_space">
+                <h3>GRUPO</h3>
+                <h1>LEVANTER</h1>
+            </div>
+            <img src="{% static 'Login/img/logo.png' %}" alt="">
+        </div>
+        <div class="vl"></div>
         <div class="form">
-            <form class="form-login" action="{% url 'log_in' %}" method="post" >
+            <form action="{% url 'log_in' %}" method="post" >
                 {% csrf_token %}
                 <h1>Login</h1>
                 {% if mensaje %}
-                <p style="background-color: rgba(202, 52, 34, 0.5);"    class="errorLogin"> {{ mensaje }}</p>
+                    <p class="errorLogin"> {{ mensaje }}</p>
                 {% endif %}
-                <input type="text" class="form-control" id="username" name="username" placeholder="Usuario" required>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
-                <button type="submit" class="button-login">Login</button>
+                <input type="text" id="username" name="username" placeholder="Usuario" required>
+                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                <button type="submit" >Login</button>
             </form>
         </div>
     </div>

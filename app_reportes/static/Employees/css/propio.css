@@ -16,6 +16,56 @@ background-color: rgb(46, 46, 46);
 color: rgb(255, 81, 0);
 }
 
+.error{
+  position:absolute;
+  left:40%;
+  display:flex;
+  font-size: 15px;
+  border: 1px;
+  width:25%;
+  color:white;
+  border-radius: 15px;
+  background-image: linear-gradient(to right, rgb(46,46,46), rgb(208, 52, 44));
+  margin:5px;
+  padding-right: 10px;
+}
+
+.error p{
+  margin:5px;
+}
+
+.error img{
+  padding:0px 10px 0px 10px;
+  margin: auto;
+  height:30px;
+}
+
+.success{
+  position: absolute;
+  left:40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  border: 1px;
+  width:20%;
+  color: white;
+  border-radius: 15px;
+  background-image: linear-gradient(to right, rgb(46,46,46), rgb(75, 181, 67));
+  margin:5px;
+  padding-right: 10px;
+}
+
+.success p{
+margin:5px;
+}
+
+.success img{
+  padding:0px 10px 0px 10px;
+  margin: auto;
+  height:30px;
+}
+
 form{
 width: 275px;
 height: 550px;
@@ -39,9 +89,46 @@ table{
 margin-left: 5%;
 }
 
+#pagination{
+  display: flex;
+  max-height: 600px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#pagination button{
+  border-radius:5px;
+}
+
+.pagination-container {
+  margin:20px 0px 0px 0px;
+  width:90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-number, .pagination-button {
+  color: black;
+  float: left;
+  padding: 4px 8px;
+  text-decoration: none;
+}
+
+.pagination-number.active {
+  background-color: rgb(255, 81, 0);
+  color: white;
+}
+
+.pagination-number:hover, .pagination-button:not(.disabled):hover {
+  background-color: rgb(251, 140, 89);
+  border-radius: 10px !important;
+}
+
 #button{
 cursor: pointer;
 margin-top: 5%;
+color: rgb(46, 46, 46) !important;
 }
 
 select {
@@ -52,7 +139,7 @@ select {
   border: 0;
   box-shadow: none;
   padding: 0 1em;
-  color: rgb(46, 46, 46);
+  color: rgb(46, 46, 46) !important;
   background-color: #fff;
   cursor: pointer;
   border-radius: 0.55em;

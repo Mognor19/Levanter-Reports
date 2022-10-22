@@ -3,18 +3,21 @@
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'Reportes/css/accounts.css' %}">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 {% endblock css %}
 
 {% block title %}Reports{% endblock title %}
 
 {% block container %}
-
-    <div class="container">
-        <div class="account" for="propio" >
-            <a href="{% url 'Reportes:reports_propio' %}" id="propio" ><p>Propio</p></a>
-        </div>
-        <div class="account">
-            <a href="{% url 'Reportes:reports_transperfect' %}" id="transperfect" ><p>Transperfect</p></a>
+    <div style="height: 80%; padding: 20px 100px;">
+        <h1>Reports</h1>
+        <div class="container">
+            <div class="account" for="propio" >
+                <a href="{% url 'Reportes:reports_propio' %}" id="propio" ><p>Propio</p></a>
+            </div>
+            <div class="account">
+                <a href="{% url 'Reportes:reports_transperfect' %}" id="transperfect" ><p>Transperfect</p></a>
+            </div>
         </div>
     </div>
 
