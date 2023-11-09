@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 
 
-# Verificar si el usuario esta autenticado en nuestra app web
+# Verificar si el usuario esta autenticado en nuestra web app
 def page_login(request):
     
     if request.user.is_authenticated:
@@ -14,7 +14,7 @@ def page_login(request):
         
     return render(request, 'security/login.html')
 
-# Iniciar sesion 
+# Iniciar sesión 
 def log_in(request):
     if (request.method == "POST"):
         username = request.POST.get('username')
@@ -35,7 +35,7 @@ def log_in(request):
     else:
         return redirect('/')
 
-
+# Cerrar sesión
 def log_out(request):
     logout(request)
     return redirect('/')

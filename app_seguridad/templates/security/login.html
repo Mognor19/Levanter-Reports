@@ -1,3 +1,4 @@
+{% comment %} Cargar los archivos estáticos {% endcomment %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -15,6 +16,7 @@
             <div class="title_space">
                 <h3>GRUPO</h3>
                 <h1>LEVANTER</h1>
+                <h2>REPORTS</h2>
             </div>
             <img src="{% static 'Login/img/logo.png' %}" alt="">
         </div>
@@ -26,7 +28,9 @@
                 {% if mensaje %}
                     <p class="errorLogin"> {{ mensaje }}</p>
                 {% endif %}
+                <label for="username">E-mail</label>
                 <input type="text" id="username" name="username" placeholder="Usuario" required>
+                <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Contraseña" required>
                 <button type="submit" >Login</button>
             </form>

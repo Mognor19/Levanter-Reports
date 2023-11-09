@@ -17,7 +17,7 @@
             <input required type="number" min="0" step="0.1" value="1.5" oninput="validity.valid||(value='');" id="adjust" name="adjust">
         </div>
         <div class="uinput-container">
-            <input type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            <input required type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
         </div>
         {% if messages %}
             {% for m in messages %}

@@ -11,24 +11,29 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Inicializar las variables de entorno
+env = environ.Env()
+environ.Env.read_env()
+
+# Construir rutas dentro del proyecto como este: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
+# Ajustes de desarrollo de inicio rápido - inadecuados para la producción
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a9njn40*1=j&ze(mw54*-7!f8_&1=s#qko8=k0@$t_56ke9d^t'
+# ADVERTENCIA DE SEGURIDAD: mantenga en secreto la clave secreta utilizada en la producción!
+SECRET_KEY = env('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# ADVERTENCIA DE SEGURIDAD: ¡no ejecute con la depuración, activar en producción!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# Definición de las aplicaciones
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,8 +58,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#Ubicación del archivo que contiene las paginas a las que el usuario puede acceder
 ROOT_URLCONF = 'Reportes.urls'
 
+#Plantillas y plantilla global
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -74,22 +81,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Reportes.wsgi.application'
 
 
-# Database
+# Base de datos
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'reportsdb',
-        'USER': 'postgres',
-        'PASSWORD':'Flores12',
-        'HOST':'127.0.0.1',
-        'DATABASE_PORT':'5432',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD':env('DATABASE_PASS'),
+        'HOST':env('HOST'),
+        'DATABASE_PORT':env('DATABASE_PORT'),
     }
 }
 
 
-# Password validation
+# Validacion de la contraseña
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -108,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
+# Internacionalización
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
@@ -124,7 +131,7 @@ USE_TZ = True
 LOGIN_URL = '/'
 
 
-# Static files (CSS, JavaScript, Images)
+# Archivos estaticos (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
@@ -135,11 +142,12 @@ FILE_UPLOAD_HANDLERS = [
     "django_excel.TemporaryExcelFileUploadHandler"
 ]
 
-# Default primary key field type
+# Tipo de campo de clave primaria por defecto
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Determina el tiempo de espera de una sesión inactiva
 SESSION_COOKIE_AGE = 1200
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True

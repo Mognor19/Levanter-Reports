@@ -5,7 +5,7 @@ from app_seguridad import views
 from django.conf.urls.static import static
 
 urlpatterns = [
-    # Url para el admin
+    # Url para pagina de administración
     path('admin/', admin.site.urls),
 
     #Urls para el inicio de sesion
@@ -17,4 +17,5 @@ urlpatterns = [
     path('Reportes/', include('app_reportes.urls')),
     path('Registro/', include('app_registro.urls')),
     
+    # Agregar los archivos estático para ser usado en todas las Urls
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

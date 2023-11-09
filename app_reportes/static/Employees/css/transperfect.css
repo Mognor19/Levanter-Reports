@@ -98,9 +98,6 @@ margin:5px;
     align-items: center;
     justify-content: center;
   }
-  #prev-button{
-    margin-right: 7px;
-  }
 
   #pagination button{
     border-radius:5px;

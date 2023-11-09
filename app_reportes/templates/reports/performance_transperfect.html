@@ -14,10 +14,10 @@
         <label for="">Call History Upload</label>
         <div class="uinput-container">
             <label for="date" >Date</label>
-            <input type="date" id="date" name="date" value="{{today}}" min="{{week}}" max="{{today}}">
+            <input required type="date" id="date" name="date" value="{{today}}" min="{{week}}" max="{{today}}">
         </div>
         <div class="uinput-container">
-            <input type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            <input required type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
         </div>
         {% if messages %}
             {% for m in messages %}

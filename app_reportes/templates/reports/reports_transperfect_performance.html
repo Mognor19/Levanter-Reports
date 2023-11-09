@@ -160,7 +160,7 @@
         </div>
     {% else %}
         <div class="container">
-            <h1>There is nothing here...yet.</h1>
+            <h1>There is nothing here yet.</h1>
         </div>
     {% endif %}
     <footer style="height: 50px;">
@@ -173,7 +173,7 @@
     <script src="{% static 'Reportes/js/tableExport.min.js' %}"></script>
     <script>
         function Export() {
-            $('#call_summary').tableExport({type:'xlsx'});
+            $('#call_summary').tableExport({type:'xlsx',fileName:'Transperfect performance report'});
         }
     </script>
     <script src="{% static 'Reportes/js/jquery.multiselect.js' %}"></script>

@@ -141,83 +141,70 @@
                 <canvas id="myChart" style="width:700px"></canvas>
             </div>
         </div>
-        <footer style="height: 50px;">
-            <div>
-                <table id="call_summary" style="position: fixed; bottom: 100%;">
-                    <thead>
-                        <tr>
-                            <td>Date</td>
-                            <td>TP ID</td>
-                            <td style="width: 200px !important;">ISP Name</td>
-                            <td>Language</td>
-                            <td>ISP Role</td>
-                            <td>ISP Site</td>
-                            <td>Start Time</td>
-                            <td>End Time</td>
-                            <td>Speed Answer</td>
-                            <td>Minutes</td>
-                            <td>Adjusted Minutes</td>
-                            <td></td>
-                            <td></td>
-                            <td>Languages</td>
-                            <td>Total Minutes</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for a in data %}
-                            <tr>
-                                <td>{{a.date}}</td>
-                                <td>{{a.employee_id.transperfect_id}}</td>
-                                <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
-                                <td>{{a.language}}</td>
-                                <td>{{a.employee_id.skillset}}</td>
-                                <td>{{a.employee_id.city.city}}</td>
-                                <td>{{a.interaction_start_time|time}}</td>
-                                <td>{{a.interaction_end_time|time}}</td>
-                                <td>{{a.minutes}}</td>
-                                <td>{{a.speed_answer}}</td>
-                                <td>{{a.adjusted_minutes}}</td>
-                                <td></td>
-                                <td></td>
-                                {% for k,v in language_minutes.items %}
-                                    {% if forloop.parentloop.counter == forloop.counter %}
-                                        <td>{{k}}</td>
-                                        <td>{{v}}</td>
-                                    {% endif %}
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </footer>
     {% else %}
         <div class="container">
-            <h1>There is nothing here...yet.</h1>
+            <h1>There is nothing here yet.</h1>
         </div>
     {% endif %}
-    <footer style="height: 50px;"></footer>
+    <footer style="height: 50px;">
+        <div>
+            <table id="call_summary" style="position: fixed; bottom: 100%;">
+                <thead>
+                    <tr>
+                        <td>Date</td>
+                        <td>TP ID</td>
+                        <td style="width: 200px !important;">ISP Name</td>
+                        <td>Language</td>
+                        <td>ISP Role</td>
+                        <td>ISP Site</td>
+                        <td>Start Time</td>
+                        <td>End Time</td>
+                        <td>Speed Answer</td>
+                        <td>Minutes</td>
+                        <td>Adjusted Minutes</td>
+                        <td></td>
+                        <td></td>
+                        <td>Languages</td>
+                        <td>Total Minutes</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in data %}
+                        <tr>
+                            <td>{{a.date}}</td>
+                            <td>{{a.employee_id.transperfect_id}}</td>
+                            <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
+                            <td>{{a.language}}</td>
+                            <td>{{a.employee_id.skillset}}</td>
+                            <td>{{a.employee_id.city.city}}</td>
+                            <td>{{a.interaction_start_time|time}}</td>
+                            <td>{{a.interaction_end_time|time}}</td>
+                            <td>{{a.minutes}}</td>
+                            <td>{{a.speed_answer}}</td>
+                            <td>{{a.adjusted_minutes}}</td>
+                            <td></td>
+                            <td></td>
+                            {% for k,v in language_minutes.items %}
+                                {% if forloop.parentloop.counter == forloop.counter %}
+                                    <td>{{k}}</td>
+                                    <td>{{v}}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </footer>
 {% endblock container %}
 
 {% block js %}
     <script src="{% static 'Reportes/js/xlsx.core.min.js' %}"></script>
     <script src="{% static 'Reportes/js/FileSaver.min.js' %}"></script>
     <script src="{% static 'Reportes/js/tableExport.min.js' %}"></script>
-    {% comment %} <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script> {% endcomment %}
-    {% comment %} <script type="text/javascript">
-        function Export() {
-            $("#call_summary").table2excel({
-                exclude: ".excludeThisClass",
-                name: "sheet1",
-                filename: "Transperfect.xls",
-                preserveColors: false
-            })
-        }
-    </script> {% endcomment %}
     <script>
         function Export() {
-            $('#call_summary').tableExport({type:'xlsx'});
+            $('#call_summary').tableExport({type:'xlsx',fileName:'Transperfect production report'});
         }
     </script>
     <script src="{% static 'Reportes/js/jquery.multiselect.js' %}"></script>

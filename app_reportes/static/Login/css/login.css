@@ -29,6 +29,10 @@
     margin: 0px;
 }
 
+.title_space h2{
+    margin: 0px;
+}
+
 .title_space h3{
     margin: 0px;
     color: #ca3422;
@@ -49,8 +53,11 @@
     z-index: 1;
     max-width: 300px;
     padding: 45px;
-    text-align: center;
     color: #000000;
+}
+
+.form h1{
+    text-align: center;
 }
 
 /*forma y posicion de texto y botones al formulario*/
