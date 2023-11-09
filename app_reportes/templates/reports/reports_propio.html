@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Reportes/css/reports.css' %}">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href="{% static 'Reportes/css/jquery.multiselect.css' %}" rel="stylesheet" type="text/css">
+{% endblock css %}
+
+{% block title %}Reports{% endblock title %}
+
+{% block container %}
+        <div id="options">
+            <div id="filter">
+                <form action="{% url 'Reportes:reports_propio' %}" method="get">
+                    <div class="uinput_container_select">
+                        <label for="employee_id" >CRID</label>
+                        <select name="employee_id" id="employee_id" multiple>
+                            {% for e in Employees %}
+                                <option value="{{e.employee_id}}">{{e.employee_id}} | {{e.first_name}} {{e.middle_name}} {{e.last_names}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="uinput_container_select">
+                        <label for="date" >Date</label>
+                        <select name="date" id="date" multiple>
+                            {% for d in Dates %}
+                                <option value="{{d.interaction_date}}">{{d.interaction_date}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="uinput_container_select">
+                        <label for="city" >City</label>
+                        <select name="city" id="city" multiple>
+                            {% for c in Cities %}
+                                <option value="{{c.city}}">{{c.city}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="uinput_container_button">
+                        <input type="submit" value="Filter" id="button">
+                    </div>
+                </form>
+            </div>
+            {% if data %}
+                <div class="download">
+                    <input type="button" id="btnDownload" value="Download" onclick="Export()" />
+                </div>
+            {% endif %}
+        </div>
+    {% if data %}
+        <div class="container">
+            <div class="scroll_space">
+                <table class="call_history">
+                    <thead>
+                        <tr>
+                            <td style="width: 200px;">Date/Time</td>
+                            <td>CRID</td>
+                            <td>Date</td>
+                            <td>Call Start</td>
+                            <td>Call Length</td>
+                            <td>Duration (min.)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in data %}
+                            <tr>
+                                <td>{{a.interaction_date}} {{a.interaction_start_time|time}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.interaction_date}}</td>
+                                <td>{{a.interaction_start_time|time}}</td>
+                                <td>{{a.interaction_length}}</td>
+                                <td>{{a.interaction_length_minutes}}.00</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="scroll_space" style="display: flex; justify-content: center; align-items: center;">
+                <table class="call_history">
+                    <thead>
+                        <tr>
+                            <td>Total Calls</td>
+                            <td>Total Minutes</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{total_calls}}</td>
+                            {% if total_minutes.interaction_length_minutes__sum %}
+                                <td>{{total_minutes.interaction_length_minutes__sum}}</td>
+                            {% else %}
+                                <td>{{total_minutes}}</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="container">
+            <div class="scroll_space">
+                <table class="call_history">
+                    <thead>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>Start Time</td>
+                            <td>Dialed Number</td>
+                            <td>Fixed DID</td>
+                            <td style="width: 200px !important;">ISP Name</td>
+                            <td>ISP ID</td>
+                            <td>ISP Role</td>
+                            <td>ISP Site</td>
+                            <td>Minutes</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in data %}
+                            <tr>
+                                <td>{{a.interaction_date}}</td>
+                                <td>{{a.interaction_start_time|time}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
+                                <td>{{a.employee_id.propio_id}}</td>
+                                <td>{{a.employee_id.skillset}}</td>
+                                <td>{{a.employee_id.city.city}}</td>
+                                <td>{{a.interaction_length_minutes}}.00</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="scroll_space">
+                <canvas id="myChart" style="width:700px"></canvas>
+            </div>
+        </div>
+        <footer style="height: 50px;">
+            <div style="position: fixed; bottom: 100%;">
+                <table id="call_summary" class="call_history">
+                    <thead>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>Start Time</td>
+                            <td>Fixed DID</td>
+                            <td style="width: 200px !important;">ISP Name</td>
+                            <td>ISP ID</td>
+                            <td>ISP Role</td>
+                            <td>ISP Site</td>
+                            <td>Interaction Length</td>
+                            <td>Minutes</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in data %}
+                            <tr>
+                                <td>{{a.interaction_date}}</td>
+                                <td>{{a.interaction_start_time|time}}</td>
+                                <td>{{a.employee_id.employee_id}}</td>
+                                <td>{{a.employee_id.first_name}} {{a.employee_id.middle_name}} {{a.employee_id.last_names}}</td>
+                                <td>{{a.employee_id.propio_id}}</td>
+                                <td>{{a.employee_id.skillset}}</td>
+                                <td>{{a.employee_id.city.city}}</td>
+                                <td>{{a.interaction_length}}</td>
+                                <td>{{a.interaction_length_minutes}}.00</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </footer>
+    {% else %}
+        <div class="container">
+            <h1>There is nothing here yet.</h1>
+        </div>
+    {% endif %}
+
+{% endblock container %}
+
+{% block js %}
+    <script src="{% static 'Reportes/js/xlsx.core.min.js' %}"></script>
+    <script src="{% static 'Reportes/js/FileSaver.min.js' %}"></script>
+    <script src="{% static 'Reportes/js/tableExport.min.js' %}"></script>
+    <script>
+        function Export() {
+            $('#call_summary').tableExport({type:'xlsx',fileName:'Propio report'});
+        }
+    </script>
+    <script src="{% static 'Reportes/js/jquery.multiselect.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        $('#employee_id').multiselect({
+            columns  : 1,
+            search   : true,
+            selectAll: true,
+            texts    : {
+                placeholder: '-- select an employee --',
+                search     : 'Search Employee'
+            },
+            maxHeight: 150,
+            maxPlaceholderOpts: 1,
+        });
+        $('#date').multiselect({
+            columns  : 1,
+            search   : true,
+            selectAll: true,
+            texts    : {
+                placeholder: '-- select a date --',
+                search     : 'Search Date'
+            },
+            maxHeight: 150,
+            maxPlaceholderOpts: 1,
+        });
+        $('#city').multiselect({
+            columns  : 1,
+            search   : true,
+            selectAll: true,
+            texts    : {
+                placeholder: '-- select a city --',
+                search     : 'Search City'
+            },
+            maxHeight: 150,
+            maxPlaceholderOpts: 1,
+        });
+    </script>
+    <script>
+        var xValues = ["00:00 a.m.",
+                        "01:00 a.m",
+                        "02:00 a.m.",
+                        "03:00 a.m.",
+                        "04:00 a.m.",
+                        "05:00 a.m.",
+                        "06:00 a.m.",
+                        "07:00 a.m.",
+                        "08:00 a.m.",
+                        "09:00 a.m.",
+                        "10:00 a.m.",
+                        "11:00 a.m.",
+                        "12:00 p.m.",
+                        "13:00 p.m.",
+                        "14:00 p.m.",
+                        "15:00 p.m.",
+                        "16:00 p.m.",
+                        "17:00 p.m.",
+                        "18:00 p.m.",
+                        "19:00 p.m.",
+                        "20:00 p.m.",
+                        "21:00 p.m.",
+                        "22:00 p.m.",
+                        "23:00 p.m."]
+        var yValues = [{% for t in times %}{{t}},{% endfor %}]
+
+        new Chart("myChart", {
+        type: "line",
+        data: {
+            labels:xValues,
+            datasets: [{
+            pointRadius: 4,
+            pointBackgroundColor: "rgb(0,0,255)",
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            scales: {
+            xAxes: [{ticks: {min: 40, max:160}}],
+            yAxes: [{ticks: {min: 0, max:100}}],
+            }
+        }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    {% endblock js %}

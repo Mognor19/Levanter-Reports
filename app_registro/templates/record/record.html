@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Record/css/record.css' %}">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+{% endblock css %}
+
+{% block title %}Log{% endblock title %}
+
+{% block container %}
+    <h2 style="padding-left: 3%;">Recently uploaded</h2>
+    {% if history %}
+        <div class="container">
+            <div class="scroll_space">
+                <table class="history">
+                    <thead>
+                        <tr>
+                            <td>CRID</td>
+                            <td>Skillset</td>
+                            <td style="width: 150px;">ID</td>
+                            <td style="width: 250px;">Name</td>
+                            <td>City</td>
+                            <td>Interaction Date</td>
+                            <td>Type</td>
+                            <td style="width: 150px;">Upload Date</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in history reversed %}
+                            {% for x in h %}
+                                <tr class="entry">
+                                    <td>{{x.employee_id.employee_id}}</td>
+                                    <td>{{x.employee_id.skillset}}</td>
+                                    {% if x.employee_id.transperfect_id %}
+                                        <td>{{x.employee_id.transperfect_id}}</td>
+                                    {% else %}
+                                        <td>{{x.employee_id.propio_id}}</td>
+                                    {% endif %}
+                                    <td>{{x.employee_id.first_name}} {{x.employee_id.middle_name}} {{x.employee_id.last_names}}</td>
+                                    <td>{{x.employee_id.city.city}}</td>
+                                    {% if x.date %}
+                                        <td>{{x.date}}</td>
+                                    {% else %}
+                                        <td>{{x.interaction_date}}</td>
+                                    {% endif %}
+                                    {% if x.minutes %}
+                                        <td>Production TP</td>
+                                    {% elif x.interaction_length_minutes %}
+                                        <td>Propio</td>
+                                    {% else %}
+                                        <td>Performance TP</td>
+                                    {% endif %}
+                                    <td>{{x.created}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <h1>There hasn't been any uploads yet.</h1>
+        </div>
+    {% endif %}
+{% endblock container %}
+
+{% block js %}
+
+{% endblock js %}

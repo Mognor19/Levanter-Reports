@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'Reportes/css/propio.css' %}">
+{% endblock css %}
+
+{% block title %}Upload{% endblock title %}
+
+{% block container %}
+    <div class="container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="">Call History Upload</label>
+            <div class="uinput-container">
+                <label for="employee_id" >Employee ID</label>
+                <select required name="employee" id="employee_id">
+                    <option disabled selected value> -- select an employee -- </option>
+                    {% for e in Employees %}
+                        {% if e.employee_active == "1" %}
+                        <option value="{{e.employee_id}}">{{e.employee_id}} {{e.first_name}} {{e.middle_name}} {{e.last_names}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <div class="uinput-container">
+                <input required type="file" name="call-history" id="call-history" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+
+            {% if messages %}
+                {% for m in messages %}
+                    {% if m.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <div class="error">
+                            <img src="{% static 'Reportes/img/warning.png' %}" alt="">
+                            <p>{{m}}</p>
+                        </div>
+                    {% else %}
+                        <div class="success">
+                            <img src="{% static 'Reportes/img/success.png' %}" alt="">
+                            <p>{{m}}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+    
+            <input id="button" type="submit" value="Upload">
+        </form>
+    </div>
+
+{% endblock container %}
+
+{% block js %}
+    <script>
+        setTimeout(fade_out, 4000);
+        function fade_out() {
+            $(".success").fadeOut();
+        }
+    </script>
+{% endblock js %}
